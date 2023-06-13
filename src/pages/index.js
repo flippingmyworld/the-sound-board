@@ -107,7 +107,7 @@ const Page = () => {
             placeholder="blurred"
             width={600}
           />
-          <Heading pb={4}>A soundboard made with GatsbyJS</Heading>
+          <Heading pb={4}>A soundboard made with Appwrite & GatsbyJS</Heading>
           <Button
             variant="primaryBig"
             onClick={() =>
