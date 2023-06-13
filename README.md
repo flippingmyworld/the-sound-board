@@ -1,6 +1,6 @@
 
-<a  href="https://soundboard.gatsbyjs.io/" target="_blank">
-<img src="https://soundboard.gatsbyjs.io/img/image-og.jpg" alt="SoundBoard" />
+<a  href="https://the-sound-board.netlify.app//" target="_blank">
+<img src="https://the-sound-board.netlify.app/img/image-og.jpg" alt="SoundBoard" />
 </a>
 
 # The Soundboard app made with Apprite & GatsbyJS
