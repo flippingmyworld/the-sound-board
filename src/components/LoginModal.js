@@ -16,7 +16,7 @@ const SaveModal = () => {
     isConnected();
   }, []);
   useEffect(() => {
-    console.log(currentUser);
+    // console.log(currentUser);
   }, [isOpen]);
   const isConnected = () => {
     const promise = account.get();

@@ -9,13 +9,13 @@ const Board = ({ id }) => {
 
       promise.then(
         function (response) {
-          console.log(response); // Success
+          // console.log(response); // Success
           const boardData = JSON.parse(response.data);
           boardData.settings.id = response.$id;
           setProject(boardData);
         },
         function (error) {
-          console.log(error); // Failure
+          // console.log(error); // Failure
         }
       );
     }

@@ -1,23 +1,28 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-filename-extension */
-import React, { useState, useEffect, useRef } from 'react';
-import { connect } from 'react-redux';
-import { Box, Flex, Text, Heading, Button } from 'rebass/styled-components';
-import { Label, Input, Select,  Slider } from '@rebass/forms/styled-components';
-import styled, { ThemeProvider } from 'styled-components';
-import { updatePad, removePad, addPad, defaultPad } from '../redux/actions/pads';
-import Icon from './ui/Icon';
-import Modal from './ui/Modal';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import ConfirmModal from './ConfirmModal';
+import React, { useState, useEffect, useRef } from "react";
+import { connect } from "react-redux";
+import { Box, Flex, Text, Heading, Button } from "rebass/styled-components";
+import { Label, Input, Select, Slider } from "@rebass/forms/styled-components";
+import styled, { ThemeProvider } from "styled-components";
+import {
+  updatePad,
+  removePad,
+  addPad,
+  defaultPad,
+} from "../redux/actions/pads";
+import Icon from "./ui/Icon";
+import Modal from "./ui/Modal";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import ConfirmModal from "./ConfirmModal";
 
-import ReactPlayer from 'react-player'; 
-import 'rc-slider/assets/index.css';
-import loadable from "@loadable/component"
-const Range = loadable(() => import('rc-slider'), {
+import ReactPlayer from "react-player";
+import "rc-slider/assets/index.css";
+import loadable from "@loadable/component";
+const Range = loadable(() => import("rc-slider"), {
   resolveComponent: (components) => components.Range,
- })
+});
 const LoadingBar = styled.div.attrs((props) => ({
   style: {
     width: props.progression,
@@ -43,7 +48,8 @@ const Pad = ({
   currentGroup,
   ...props
 }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: pad.id });
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: pad.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -112,7 +118,7 @@ const Pad = ({
   }, [pad.id]);
   useEffect(() => {
     if (!ReactPlayer.canPlay(pad.url)) {
-      console.log(pad, 'can play');
+      // console.log(pad, 'can play');
       setPad({
         ...defaultPad,
         name: pad.name,
@@ -181,7 +187,8 @@ const Pad = ({
       }
       if (currentTime > fadeOutTime) {
         const fadePercent =
-          (parseFloat(duration) + pad.start - currentTime) / parseFloat(pad.fadeOut);
+          (parseFloat(duration) + pad.start - currentTime) /
+          parseFloat(pad.fadeOut);
         const volumeLev = getVolume() * fadePercent;
         setPlayerState({ ...playerState, volume: volumeLev, ...played });
       }
@@ -196,7 +203,7 @@ const Pad = ({
   const duplicatePad = () => {
     const newPad = { ...pad };
     newPad.id = Date.now();
-    newPad.name = newPad.name + ' (clone)';
+    newPad.name = newPad.name + " (clone)";
     dispatch(addPad(newPad, index + 1));
     setSettingsOpen(false);
   };
@@ -208,33 +215,40 @@ const Pad = ({
           <Box
             variant="pad"
             bg={
-              dragOver ? 'rgba(255, 255, 255, 0.2)' : playerState.playing ? 'primary' : 'background'
+              dragOver
+                ? "rgba(255, 255, 255, 0.2)"
+                : playerState.playing
+                ? "primary"
+                : "background"
             }
             sx={{
-              overflow: 'hidden',
+              overflow: "hidden",
               borderColor:
                 pad.groups.length &&
-                groups.filter((groupItem) => groupItem.id === pad.groups[0]).length
-                  ? groups.filter((groupItem) => groupItem.id === pad.groups[0])[0].color
-                  : 'primary',
+                groups.filter((groupItem) => groupItem.id === pad.groups[0])
+                  .length
+                  ? groups.filter(
+                      (groupItem) => groupItem.id === pad.groups[0]
+                    )[0].color
+                  : "primary",
             }}
           >
             <Flex
               onDragOver={() => setDragOver(true)}
               sx={{
                 opacity: pad.url ? 1 : 0.5,
-                position: 'relative',
-                overflow: 'hidden',
-                '&:hover': {
-                  '.hover-grad': { top: 0 },
-                  '.hover-icon': { opacity: 1 },
-                  '.hover-player': {
+                position: "relative",
+                overflow: "hidden",
+                "&:hover": {
+                  ".hover-grad": { top: 0 },
+                  ".hover-icon": { opacity: 1 },
+                  ".hover-player": {
                     transform: [
-                      'scale(1.5) rotate(-5deg)',
-                      'scale(1.5) rotate(-5deg)',
-                      'scale(1.5) rotate(-5deg)',
-                      'scale(1.5) rotate(-5deg)',
-                      'scale(1.8) rotate(-5deg)',
+                      "scale(1.5) rotate(-5deg)",
+                      "scale(1.5) rotate(-5deg)",
+                      "scale(1.5) rotate(-5deg)",
+                      "scale(1.5) rotate(-5deg)",
+                      "scale(1.8) rotate(-5deg)",
                     ],
                   },
                 },
@@ -248,14 +262,14 @@ const Pad = ({
                 px={8}
                 color="#fff"
                 sx={{
-                  position: 'absolute',
+                  position: "absolute",
                   top: 0,
                   right: 0,
                   left: 0,
-                  fontSize: '14px',
-                  textOverflow: 'ellipsis',
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap',
+                  fontSize: "14px",
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
                   zIndex: 3,
                 }}
               >
@@ -265,10 +279,10 @@ const Pad = ({
                 variant="ninja"
                 p={2}
                 sx={{
-                  position: 'absolute',
+                  position: "absolute",
                   top: 0,
                   right: 0,
-                  fontSize: '20px',
+                  fontSize: "20px",
                   zIndex: 4,
                 }}
                 onClick={() => {
@@ -281,10 +295,10 @@ const Pad = ({
                 variant="ninja"
                 p={2}
                 sx={{
-                  position: 'absolute',
+                  position: "absolute",
                   top: 0,
                   left: 0,
-                  fontSize: '20px',
+                  fontSize: "20px",
                   zIndex: 4,
                 }}
                 {...listeners}
@@ -296,17 +310,18 @@ const Pad = ({
                   height="100px"
                   className="hover-grad"
                   sx={{
-                    transition: 'all 200ms ease',
-                    position: 'absolute',
-                    top: '-100px',
+                    transition: "all 200ms ease",
+                    position: "absolute",
+                    top: "-100px",
                     left: 0,
                     right: 0,
                     zIndex: 1,
-                    background: 'linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)',
+                    background:
+                      "linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)",
                   }}
                 ></Box>
                 <Button
-                  sx={{ border: 'none !important' }}
+                  sx={{ border: "none !important" }}
                   width={1}
                   variant="transparent"
                   onClick={videoTogglePlayStop}
@@ -314,16 +329,17 @@ const Pad = ({
                   <Box variant="squareBox">
                     <Flex
                       sx={{
-                        position: 'absolute',
-                        fontSize: ['10vw', '10vw', '10vw', '5vw'],
-                        transform: ['', '', '', '', 'scale(1.5)'],
-                        transition: 'all 200ms ease',
-                        '&>div': {
-                          margin: '-15px',
+                        position: "absolute",
+                        fontSize: ["10vw", "10vw", "10vw", "5vw"],
+                        transform: ["", "", "", "", "scale(1.5)"],
+                        transition: "all 200ms ease",
+                        "&>div": {
+                          margin: "-15px",
                         },
-                        '.ytp-show-cards-title,.ytp-chrome-top.ytp-show-cards-title': {
-                          display: 'none !important',
-                        },
+                        ".ytp-show-cards-title,.ytp-chrome-top.ytp-show-cards-title":
+                          {
+                            display: "none !important",
+                          },
                       }}
                       className="hover-player"
                       alignItems="center"
@@ -337,8 +353,12 @@ const Pad = ({
                         url={pad.url}
                         progressInterval={100}
                         onProgress={progress}
-                        onReady={() => setPlayerState({ ...playerState, ready: true })}
-                        onPause={() => setPlayerState({ ...playerState, playing: false })}
+                        onReady={() =>
+                          setPlayerState({ ...playerState, ready: true })
+                        }
+                        onPause={() =>
+                          setPlayerState({ ...playerState, playing: false })
+                        }
                         onDuration={(duration) => {
                           if (pad.end === 0 || pad.end === null) {
                             setPad({ end: duration });
@@ -348,11 +368,11 @@ const Pad = ({
                     </Flex>
                     <Flex
                       sx={{
-                        position: 'absolute',
+                        position: "absolute",
                         zIndex: 3,
-                        fontSize: ['10vw', '10vw', '10vw', '5vw'],
+                        fontSize: ["10vw", "10vw", "10vw", "5vw"],
                         opacity: 0,
-                        transition: 'all 100ms ease',
+                        transition: "all 100ms ease",
                       }}
                       className="hover-icon"
                       alignItems="center"
@@ -361,9 +381,9 @@ const Pad = ({
                       height="100%"
                     >
                       <Icon
-                        size={['10vw', '10vw', '10vw', '5vw']}
+                        size={["10vw", "10vw", "10vw", "5vw"]}
                         color="#fff"
-                        icon={!playerState.playing ? 'ui-play' : 'square'}
+                        icon={!playerState.playing ? "ui-play" : "square"}
                       />
                     </Flex>
                   </Box>
@@ -382,32 +402,32 @@ const Pad = ({
                 width={1}
                 p={2}
                 variant="card"
-                sx={{ position: 'relative', zIndex: '2' }}
+                sx={{ position: "relative", zIndex: "2" }}
               >
                 <Heading textAlign="center" pb={1}>
-                  {pad.name === '' ? ' ' : pad.name}
+                  {pad.name === "" ? " " : pad.name}
                 </Heading>
                 <Button
                   sx={{
-                    position: 'absolute',
+                    position: "absolute",
                     top: 0,
                     left: 0,
                     zIndex: 2,
-                    fontSize: '20px',
+                    fontSize: "20px",
                   }}
                   onClick={() => {
                     videoTogglePlayStop();
                   }}
                 >
-                  <Icon icon={!playerState.playing ? 'ui-play' : 'square'} />
+                  <Icon icon={!playerState.playing ? "ui-play" : "square"} />
                 </Button>
                 <Button
                   sx={{
-                    position: 'absolute',
+                    position: "absolute",
                     top: 0,
                     right: 0,
                     zIndex: 2,
-                    fontSize: '20px',
+                    fontSize: "20px",
                   }}
                   onClick={() => {
                     setSettingsOpen(!settingsOpen);
@@ -450,23 +470,26 @@ const Pad = ({
                     p={2}
                     py={6}
                     sx={{
-                      '.rc-slider-handle:after': { whiteSpace: 'nowrap', position: 'absolute' },
-                      '.rc-slider-handle-1:after': {
+                      ".rc-slider-handle:after": {
+                        whiteSpace: "nowrap",
+                        position: "absolute",
+                      },
+                      ".rc-slider-handle-1:after": {
                         content: `"Start"`,
-                        top: '-25px',
+                        top: "-25px",
                       },
-                      '.rc-slider-handle-2:after': {
+                      ".rc-slider-handle-2:after": {
                         content: `"Fade in"`,
-                        top: '20px',
+                        top: "20px",
                       },
-                      '.rc-slider-handle-3:after': {
+                      ".rc-slider-handle-3:after": {
                         content: `"Fade Out"`,
-                        top: '20px',
+                        top: "20px",
                         right: 0,
                       },
-                      '.rc-slider-handle-4:after': {
+                      ".rc-slider-handle-4:after": {
                         content: `"End"`,
-                        top: '-25px',
+                        top: "-25px",
                         right: 0,
                       },
                     }}
@@ -474,9 +497,14 @@ const Pad = ({
                     <Label htmlFor="start"></Label>
                     <Box
                       width={4 / 4}
-                      sx={{ position: 'relative', '&>div': { top: '2px', borderRadius: '4px' } }}
+                      sx={{
+                        position: "relative",
+                        "&>div": { top: "2px", borderRadius: "4px" },
+                      }}
                     >
-                      <LoadingBar progression={`${playerState.played * 100}%`} />
+                      <LoadingBar
+                        progression={`${playerState.played * 100}%`}
+                      />
                     </Box>
 
                     <Range
@@ -487,10 +515,19 @@ const Pad = ({
                         pad.end - pad.fadeOut,
                         pad.end,
                       ]}
-                      value={[pad.start, pad.start + pad.fadeIn, pad.end - pad.fadeOut, pad.end]}
+                      value={[
+                        pad.start,
+                        pad.start + pad.fadeIn,
+                        pad.end - pad.fadeOut,
+                        pad.end,
+                      ]}
                       pushable={0}
                       step={0.1}
-                      max={videoPlayer.current ? videoPlayer.current.getDuration() : null}
+                      max={
+                        videoPlayer.current
+                          ? videoPlayer.current.getDuration()
+                          : null
+                      }
                       trackStyle={[
                         { backgroundColor: theme.colors.text },
                         { backgroundColor: theme.colors.primary },
@@ -516,7 +553,7 @@ const Pad = ({
                         },
                       ]}
                       railStyle={{
-                        backgroundColor: 'black',
+                        backgroundColor: "black",
                         opacity: 0.4,
                       }}
                       onChange={(value) =>
@@ -541,7 +578,9 @@ const Pad = ({
                       min="0"
                       max="100"
                       step="1"
-                      onChange={(e) => setPad({ volume: Number(parseInt(e.target.value)) })}
+                      onChange={(e) =>
+                        setPad({ volume: Number(parseInt(e.target.value)) })
+                      }
                     />
                   </Box>
                   <Box width={1 / 2} p={2}>
@@ -549,13 +588,14 @@ const Pad = ({
                     <Select
                       id="goups"
                       name="goups"
-                      value={pad.groups ? pad.groups[0] : 'false'}
+                      value={pad.groups ? pad.groups[0] : "false"}
                       onChange={(e) => {
                         if (currentGroup) {
                           setSettingsOpen(false);
                         }
                         setPad({
-                          groups: e.target.value === 'false' ? [] : [e.target.value],
+                          groups:
+                            e.target.value === "false" ? [] : [e.target.value],
                         });
                       }}
                     >

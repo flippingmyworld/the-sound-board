@@ -40,7 +40,7 @@ const BoardList = () => {
 
     promise.then(
       function (response) {
-        console.log(response); // Success
+        // console.log(response); // Success
 
         const boardList = response.documents.map((doc) => {
           const boardData = JSON.parse(doc.data);
@@ -52,14 +52,14 @@ const BoardList = () => {
         setBoards(boardList);
       },
       function (error) {
-        console.log(error); // Failure
+        // console.log(error); // Failure
       }
     );
   }, []);
   return (
     <Flex flexWrap="wrap" mx={-2}>
       {boards.map((board) => {
-        console.log(board);
+        // console.log(board);
         const ytPads = board.pads.filter((pad) =>
           get_youtube_thumbnail(pad.url)
         );
