@@ -277,18 +277,14 @@ const Page = () => {
               About
             </Button>
           </Link>
+          <a href="https://cloud.appwrite.io/" target="_blank" rel="noreferrer">
+            <Button variant="ninja" px={1} href="#!">
+              Appwrite Cloud
+            </Button>
+          </a>
           <a href="https://www.gatsbyjs.com/" target="_blank" rel="noreferrer">
             <Button variant="ninja" px={1} href="#!">
               GatsbyJS
-            </Button>
-          </a>
-          <a
-            href="https://www.gatsbyjs.com/products/cloud/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Button variant="ninja" px={1}>
-              Gatsby Cloud
             </Button>
           </a>
         </Flex>
