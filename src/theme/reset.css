@@ -1,0 +1,38 @@
+
+html {
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+  body{
+    margin: 0;
+	overflow-x: hidden;
+    padding: 0;
+  }
+pre {
+    overflow-x: scroll;
+}
+
+.custom-shape-divider-bottom-1632974164 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
+}
+
+.custom-shape-divider-bottom-1632974164 svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 77px;
+}
+
+.custom-shape-divider-bottom-1632974164 .shape-fill {
+  fill: #FFFFFF;
+}
