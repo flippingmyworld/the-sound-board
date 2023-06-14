@@ -9,7 +9,7 @@ import {
   search as searchReducer,
 } from "../redux/actions/settings";
 import SaveModal from "./SaveModal";
-// import LoginModal from "./LoginModal";
+import LoginModal from "./LoginModal";
 import ShareModal from "./ShareModal";
 const Search = ({ settings, dispatch }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -154,7 +154,7 @@ const Search = ({ settings, dispatch }) => {
         <Icon icon="microphone-alt" color={!isVoiceOver ? "text" : "primary"} />
       </Button>
       {!settings.id ? <SaveModal /> : <ShareModal />}
-      {/* <LoginModal /> */}
+      <LoginModal />
     </Flex>
   );
 };
