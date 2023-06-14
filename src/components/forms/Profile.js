@@ -1,27 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Box, Heading, Button } from "rebass/styled-components";
+import { Box, Heading, Button, Flex } from "rebass/styled-components";
 import { Input, Label } from "@rebass/forms/styled-components";
-import Icon from "../ui/Icon";
-import Modal from "../ui/Modal";
+import LogoutForm from "./LogoutForm";
+import { account, databases } from "../../utils/appwriteClient";
+import { Link } from "gatsby";
 
-import { ID, account } from "../../utils/appwriteClient";
-
-const ProfileForm = () => {
-  const [formValues, setFormValues] = useState({ mail: "", pass: "" });
-  useEffect(() => {
-    isConnected();
-  }, []);
-  const isConnected = () => {
-    account.getSession("current").then((resp) => dispatch(updateSession(resp)));
-  };
-
-  const login = () => {
-    if (formValues.mail !== "" && formValues.pass !== "") {
-      const promise = account.createEmailSession(
-        formValues.mail,
-        formValues.pass
-      );
+const ProfileForm = ({ dispatch, user }) => {
+  const [formValues, setFormValues] = useState({
+    username: user.name,
+    avatar: "",
+    bio: "",
+  });
+  console.log(user, "update user");
+  const update = () => {
+    if (formValues.username !== user.name) {
+      const promise = account.updateName(formValues.username);
 
       promise.then(
         function (response) {
@@ -31,58 +25,63 @@ const ProfileForm = () => {
           console.log(error); // Failure
         }
       );
+
+      databases
+        .updateDocument("soundboard", "users", user.$id, {
+          name: formValues.username,
+        })
+        .then(
+          function (response) {
+            console.log(response); // Success
+          },
+          function (error) {
+            databases.createDocument("soundboard", "users", user.$id, {
+              name: formValues.username,
+            });
+          }
+        );
     }
   };
   return (
     <Box width={1} p={2}>
       <Heading textAlign="center" pb={1}>
-        Login
+        Profile
       </Heading>
 
       <Box width={1 / 1} p={2}>
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="username">User name</Label>
         <Input
-          name="email"
+          name="username"
           type="text"
-          placeholder="your@mail.com"
-          value={formValues.mail}
+          placeholder="User name"
+          value={formValues.username}
           onChange={(e) =>
             setFormValues({
               ...formValues,
-              mail: e.target.value,
+              username: e.target.value,
             })
           }
         />
       </Box>
-      <Box width={1 / 1} p={2}>
-        <Label htmlFor="password">Password</Label>
-        <Input
-          name="password"
-          type="password"
-          placeholder=""
-          value={formValues.pass}
-          onChange={(e) =>
-            setFormValues({
-              ...formValues,
-              pass: e.target.value,
-            })
-          }
-        />
-      </Box>
-      <Box width={1 / 1} p={2}>
+      <Flex width={1 / 1} p={2} justifyContent="space-between">
         <Button
-          opacity={formValues.mail !== "" && formValues.pass !== "" ? 1 : 0.5}
-          onClick={login}
+          onClick={update}
           mr={1}
+          opacity={formValues.username !== user.name ? 1 : 0.5}
         >
-          Log me in
+          Update
         </Button>
-      </Box>
+        <Link to={"/boards/user/" + user.$id}>
+          <Button mr={1}>Go to my soundboards</Button>
+        </Link>
+
+        <LogoutForm />
+      </Flex>
     </Box>
   );
 };
 
-const mapStateToProps = (state) => {
-  return { state: state };
+const mapStateToProps = ({ user }) => {
+  return { ...user };
 };
 export default connect(mapStateToProps)(ProfileForm);

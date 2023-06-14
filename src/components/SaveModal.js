@@ -28,12 +28,9 @@ const SaveModal = ({ state, user, dispatch }) => {
 
       promise.then(
         function (response) {
-          // console.log(response); // Success
-          navigate("/board/" + response.$id);
+          navigate("/boards/" + response.$id);
         },
-        function (error) {
-          // console.log(error); // Failure
-        }
+        function (error) {}
       );
     }
   };

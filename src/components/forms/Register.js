@@ -4,7 +4,7 @@ import { Box, Heading, Button, Flex } from "rebass/styled-components";
 import { Input, Label } from "@rebass/forms/styled-components";
 
 import { updateSession, setLoading, logout } from "../../redux/actions/user";
-import { ID, account } from "../../utils/appwriteClient";
+import { ID, account, databases } from "../../utils/appwriteClient";
 
 const RegisterForm = ({ dispatch }) => {
   const [formValues, setFormValues] = useState({
@@ -21,6 +21,9 @@ const RegisterForm = ({ dispatch }) => {
           (userObj) => {
             account.createEmailSession(formValues.mail, formValues.pass).then(
               (resp) => {
+                databases.createDocument("soundboard", "users", userObj.$id, {
+                  name: userObj.name,
+                });
                 dispatch(updateSession(resp));
               },
               () => dispatch(logout())

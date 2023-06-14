@@ -12,6 +12,7 @@ import {
 } from "../../redux/actions/user";
 import { account } from "../../utils/appwriteClient";
 import LogoutForm from "./LogoutForm";
+import ProfileForm from "./Profile";
 
 const Connect = ({ user, session, loading, dispatch }) => {
   const tabs = [
@@ -79,8 +80,7 @@ const Connect = ({ user, session, loading, dispatch }) => {
   if (user?.$id) {
     return (
       <Box>
-        Hello
-        <LogoutForm />
+        <ProfileForm />
       </Box>
     );
   }

@@ -21,7 +21,7 @@ const LoginForm = ({ dispatch }) => {
   };
 
   return (
-    <Button onClick={LogOut} mr={1}>
+    <Button variant="primaryOutline" onClick={LogOut} mr={1}>
       Log out
     </Button>
   );

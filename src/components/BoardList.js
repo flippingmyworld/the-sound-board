@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Text } from "rebass/styled-components";
+import { Box, Flex, Heading, Text } from "rebass/styled-components";
 import { Link } from "gatsby";
 import { databases, Query } from "../utils/appwriteClient";
 
@@ -35,13 +35,15 @@ function get_youtube_thumbnail(url, quality) {
 }
 const BoardList = ({ user }) => {
   const [boards, setBoards] = useState([]);
+  const [boardsInfos, setBoardsInfos] = useState({
+    name: "All",
+    bio: "Discover the latest Soundboard mades",
+  });
   useEffect(() => {
     const promise = user
-      ? databases.listDocuments(
-          "soundboard",
-          "boards",
-          Query.equal("user", [user])
-        )
+      ? databases.listDocuments("soundboard", "boards", [
+          Query.equal("user", [user]),
+        ])
       : databases.listDocuments("soundboard", "boards");
 
     promise.then(
@@ -61,92 +63,105 @@ const BoardList = ({ user }) => {
         // console.log(error); // Failure
       }
     );
+    if (user) {
+      databases
+        .listDocuments("soundboard", "users", [Query.equal("$id", [user])])
+        .then((res) => setBoardsInfos(res.documents[0]));
+    }
   }, []);
   return (
-    <Flex flexWrap="wrap" mx={-2}>
-      {boards.map((board) => {
-        // console.log(board);
-        const ytPads = board.pads.filter((pad) =>
-          get_youtube_thumbnail(pad.url)
-        );
-        const imageUrl = ytPads.length
-          ? get_youtube_thumbnail(ytPads[0].url)
-          : "/img/image-og.jpg";
-        return (
-          <Box key={board.settings.id} width={[1, 1 / 2, 1 / 3]}>
-            <Link to={"/boards/" + board.settings.id}>
-              <Box
-                p={2}
-                sx={{
-                  img: {
-                    transition: "all 200ms ease",
-                  },
-                  "&:hover": {
-                    ".hover-grad": {
-                      bottom: "0",
-                    },
-                    img: {
-                      transform: "scale(1.1) rotate(-5deg)",
-                    },
-                  },
-                }}
-              >
+    <>
+      <Box textAlign="center">
+        <Heading>
+          {boardsInfos.name}
+          {user && "'s Soundboards"}
+        </Heading>
+      </Box>
+      <Flex flexWrap="wrap" mx={-2}>
+        {boards.map((board) => {
+          // console.log(board);
+          const ytPads = board.pads.filter((pad) =>
+            get_youtube_thumbnail(pad.url)
+          );
+          const imageUrl = ytPads.length
+            ? get_youtube_thumbnail(ytPads[0].url)
+            : "/img/image-og.jpg";
+          return (
+            <Box key={board.settings.id} width={[1, 1 / 2, 1 / 3]}>
+              <Link to={"/boards/" + board.settings.id}>
                 <Box
-                  variant="squareBox"
-                  sx={{ overflow: "hidden", borderRadius: "big" }}
-                >
-                  {" "}
-                  <Box
-                    height="100px"
-                    className="hover-grad"
-                    sx={{
+                  p={2}
+                  sx={{
+                    img: {
                       transition: "all 200ms ease",
-                      position: "absolute",
-                      bottom: "-100px",
-                      left: 0,
-                      right: 0,
-                      zIndex: 1,
-                      background:
-                        "linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)",
-                    }}
-                  ></Box>
-                  <Flex
-                    sx={{
-                      position: "absolute",
-                      fontSize: ["10vw", "10vw", "10vw", "5vw"],
-                      transform: ["scale(1.8)"],
-                      transition: "all 200ms ease",
-                      "&>div": {
-                        margin: "-15px",
+                    },
+                    "&:hover": {
+                      ".hover-grad": {
+                        bottom: "0",
                       },
-                    }}
-                    className="hover-player"
-                    alignItems="center"
-                    justifyContent="center"
-                    width="100%"
-                    height="100%"
+                      img: {
+                        transform: "scale(1.1) rotate(-5deg)",
+                      },
+                    },
+                  }}
+                >
+                  <Box
+                    variant="squareBox"
+                    sx={{ overflow: "hidden", borderRadius: "big" }}
                   >
-                    <img src={imageUrl} alt={board.settings.name} />
-                  </Flex>
-                  <Text
-                    sx={{
-                      position: "absolute",
-                      bottom: "10px",
-                      left: 0,
-                      right: 0,
-                      zIndex: 3,
-                      padding: "10px",
-                    }}
-                  >
-                    {board.settings.name}
-                  </Text>
+                    {" "}
+                    <Box
+                      height="100px"
+                      className="hover-grad"
+                      sx={{
+                        transition: "all 200ms ease",
+                        position: "absolute",
+                        bottom: "-100px",
+                        left: 0,
+                        right: 0,
+                        zIndex: 1,
+                        background:
+                          "linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)",
+                      }}
+                    ></Box>
+                    <Flex
+                      sx={{
+                        position: "absolute",
+                        fontSize: ["10vw", "10vw", "10vw", "5vw"],
+                        transform: ["scale(1.8)"],
+                        transition: "all 200ms ease",
+                        "&>div": {
+                          margin: "-15px",
+                        },
+                      }}
+                      className="hover-player"
+                      alignItems="center"
+                      justifyContent="center"
+                      width="100%"
+                      height="100%"
+                    >
+                      <img src={imageUrl} alt={board.settings.name} />
+                    </Flex>
+                    <Text
+                      sx={{
+                        position: "absolute",
+                        bottom: "10px",
+                        left: 0,
+                        right: 0,
+                        zIndex: 3,
+                        padding: "10px",
+                      }}
+                    >
+                      {board.settings.name}
+                    </Text>
+                  </Box>
                 </Box>
-              </Box>
-            </Link>
-          </Box>
-        );
-      })}
-    </Flex>
+              </Link>
+            </Box>
+          );
+        })}
+      </Flex>
+    </>
   );
 };
 export default BoardList;
