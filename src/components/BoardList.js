@@ -36,7 +36,7 @@ function get_youtube_thumbnail(url, quality) {
 const BoardList = ({ user }) => {
   const [boards, setBoards] = useState([]);
   const [boardsInfos, setBoardsInfos] = useState({
-    name: "All",
+    name: "All the latest Soundboard mades",
     bio: "Discover the latest Soundboard mades",
   });
   useEffect(() => {
@@ -72,7 +72,7 @@ const BoardList = ({ user }) => {
   return (
     <>
       <Box textAlign="center">
-        <Heading>
+        <Heading pb={2}>
           {boardsInfos.name}
           {user && "'s Soundboards"}
         </Heading>

@@ -14,7 +14,7 @@ import Search from "./Search";
 import { GlobalStyle, SiteWrapper } from "../theme/Site.style";
 import theme from "../theme";
 import themeColors, { groupColors } from "../theme/colors";
-
+import Notifications from "./Notifications";
 import { StaticImage } from "gatsby-plugin-image";
 import {
   DndContext,
@@ -236,6 +236,7 @@ const App = ({ groups, pads, settings, dispatch, state, project }) => {
               </SortableContext>
             </DndContext>
           </Flex>
+          <Notifications />
         </Box>
       </SiteWrapper>
     </ThemeProvider>

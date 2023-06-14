@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Box, Heading, Button } from "rebass/styled-components";
 import { Input, Label } from "@rebass/forms/styled-components";
 import { updateSettings } from "../redux/actions/settings";
+import { addNotification } from "../redux/actions/notifications";
 import Icon from "./ui/Icon";
 import Modal from "./ui/Modal";
 import { navigate } from "gatsby";
@@ -22,7 +23,9 @@ const SaveModal = ({ state, user, dispatch }) => {
             data: JSON.stringify(state),
             user: user.user.$id,
           })
-          .then(console.log, console.log);
+          .then(() => {
+            dispatch(addNotification("Soundboard updated"));
+          }, console.log);
       } else {
         const promise = databases.createDocument(
           "soundboard",
