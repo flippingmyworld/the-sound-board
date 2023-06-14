@@ -1,26 +1,34 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import { Button, Box } from "rebass/styled-components";
 import Icon from "./ui/Icon";
 import Modal from "./ui/Modal";
 
 import ConnectFrom from "./forms/Connect";
-import { width } from "styled-system";
-const SaveModal = () => {
+const UserModal = ({ ButtonComponent }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <Button
-        pl={2}
-        variant="ninja"
-        onClick={() => {
-          setIsOpen(true);
-        }}
-        width="40px"
-      >
-        <Icon icon="user" color="text" />
-      </Button>
+      {ButtonComponent ? (
+        <Box
+          onClick={() => {
+            setIsOpen(true);
+          }}
+        >
+          {ButtonComponent}
+        </Box>
+      ) : (
+        <Button
+          pl={2}
+          variant="ninja"
+          onClick={() => {
+            setIsOpen(true);
+          }}
+          width="40px"
+        >
+          <Icon icon="user" color="text" />
+        </Button>
+      )}
       <Modal
         isOpen={isOpen}
         onClickBg={() => {
@@ -41,7 +49,4 @@ const SaveModal = () => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return { state: state };
-};
-export default connect(mapStateToProps)(SaveModal);
+export default UserModal;
