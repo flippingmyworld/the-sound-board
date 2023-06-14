@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Button } from "rebass/styled-components";
 
 import { logout } from "../../redux/actions/user";
 
-import { ID, account } from "../../utils/appwriteClient";
+import { account } from "../../utils/appwriteClient";
 
 const LoginForm = ({ dispatch }) => {
   const LogOut = () => {
     const promise = account.deleteSession("current");
 
     promise.then(
-      function (response) {
+      function () {
         dispatch(logout());
       },
       function (error) {

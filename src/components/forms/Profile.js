@@ -8,43 +8,14 @@ import Modal from "../ui/Modal";
 import { ID, account } from "../../utils/appwriteClient";
 
 const ProfileForm = () => {
-  const [currentUser, setCurrentUser] = useState(false);
-
   const [formValues, setFormValues] = useState({ mail: "", pass: "" });
   useEffect(() => {
     isConnected();
   }, []);
   const isConnected = () => {
-    const promise = account.get();
-
-    promise.then(
-      function (response) {
-        console.log(response); // Success
-        setCurrentUser(response);
-      },
-      function (error) {
-        console.log(error); // Failure
-      }
-    );
+    account.getSession("current").then((resp) => dispatch(updateSession(resp)));
   };
-  const create = () => {
-    if (formValues.mail !== "" && formValues.pass !== "") {
-      const promise = account.create(
-        ID.unique(),
-        formValues.mail,
-        formValues.pass
-      );
 
-      promise.then(
-        function (response) {
-          console.log(response); // Success
-        },
-        function (error) {
-          console.log(error); // Failure
-        }
-      );
-    }
-  };
   const login = () => {
     if (formValues.mail !== "" && formValues.pass !== "") {
       const promise = account.createEmailSession(

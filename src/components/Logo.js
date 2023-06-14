@@ -2,7 +2,7 @@ import React from "react";
 import { Flex } from "rebass/styled-components";
 import { StaticImage } from "gatsby-plugin-image";
 import { Link } from "gatsby";
-const Page = () => {
+const Logo = () => {
   return (
     <Flex textAlign="center" py={5} alignItems="center" flexDirection="column">
       <Link to="/">
@@ -17,4 +17,4 @@ const Page = () => {
     </Flex>
   );
 };
-export default Page;
+export default Logo;

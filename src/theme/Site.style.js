@@ -1,14 +1,23 @@
-import styled, { createGlobalStyle } from 'styled-components';
-import './reset.css';
-import { width, height, color, space, boxShadow, borderRadius } from 'styled-system';
-import { themeGet } from '@styled-system/theme-get';
-import { normalize } from 'polished';
+import styled, { createGlobalStyle } from "styled-components";
+import "./reset.css";
+import {
+  width,
+  height,
+  color,
+  space,
+  boxShadow,
+  borderRadius,
+} from "styled-system";
+import { themeGet } from "@styled-system/theme-get";
+import { normalize } from "polished";
 const GlobalStyle = createGlobalStyle`
 ${normalize()}
 
-
+@keyframes fadeIn { 
+  from { opacity: 0; } 
+}
 *{
-  font-family: ${themeGet('fonts.body')};
+  font-family: ${themeGet("fonts.body")};
 /* Hide scrollbar for IE, Edge and Firefox */
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
@@ -17,21 +26,21 @@ ${normalize()}
   display: none;
 }
 h1,h2,h3,h4,h5,h6{
-  font-family: ${themeGet('fonts.heading')};
+  font-family: ${themeGet("fonts.heading")};
 }
 .drawer-content{
-  background-color:${themeGet('colors.background')};
-  color: ${themeGet('colors.text')};
+  background-color:${themeGet("colors.background")};
+  color: ${themeGet("colors.text")};
 }
   body,html{
-    background-color:${themeGet('colors.background')};
-    font-family: ${themeGet('fonts.body')};
-    // color: ${themeGet('colors.text')};
-    font-size:${themeGet('fontSizes.2')}px;
+    background-color:${themeGet("colors.background")};
+    font-family: ${themeGet("fonts.body")};
+    // color: ${themeGet("colors.text")};
+    font-size:${themeGet("fontSizes.2")}px;
     margin: 0;
   }
   *{
-    font-family: ${themeGet('fonts.body')};
+    font-family: ${themeGet("fonts.body")};
     &:focus {
     outline: none;
     outline-color: transparent;
@@ -67,7 +76,7 @@ const SiteWrapper = styled.div`
   ${borderRadius}
 `;
 
-GlobalStyle.displayName = 'GlobalStyle';
-SiteWrapper.displayName = 'SiteWrapper';
+GlobalStyle.displayName = "GlobalStyle";
+SiteWrapper.displayName = "SiteWrapper";
 
 export { GlobalStyle, SiteWrapper };

@@ -1,49 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Box, Heading, Button, Flex } from "rebass/styled-components";
 import { Input, Label } from "@rebass/forms/styled-components";
-import Icon from "../ui/Icon";
-import Modal from "../ui/Modal";
-import { updateUser } from "../../redux/actions/user";
 
-import { ID, account } from "../../utils/appwriteClient";
+import { updateSession, setLoading } from "../../redux/actions/user";
+
+import { account } from "../../utils/appwriteClient";
 
 const LoginForm = ({ dispatch }) => {
-  const [currentUser, setCurrentUser] = useState(false);
-
   const [formValues, setFormValues] = useState({ mail: "", pass: "" });
-  useEffect(() => {
-    isConnected();
-  }, []);
-  const isConnected = () => {
-    const promise = account.get();
-
-    promise.then(
-      function (response) {
-        console.log(response); // Success
-        dispatch(updateUser(response)); // Success
-      },
-      function (error) {
-        console.log(error); // Failure
-      }
-    );
-  };
 
   const login = () => {
     if (formValues.mail !== "" && formValues.pass !== "") {
-      const promise = account.createEmailSession(
-        formValues.mail,
-        formValues.pass
-      );
-
-      promise.then(
-        function (response) {
-          isConnected();
-        },
-        function (error) {
-          console.log(error); // Failure
-        }
-      );
+      dispatch(setLoading());
+      account
+        .createEmailSession(formValues.mail, formValues.pass)
+        .then((resp) => dispatch(updateSession(resp)), console.log);
     }
   };
   return (

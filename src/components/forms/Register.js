@@ -1,68 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Box, Heading, Button, Flex } from "rebass/styled-components";
 import { Input, Label } from "@rebass/forms/styled-components";
 
+import { updateSession, setLoading } from "../../redux/actions/user";
 import { ID, account } from "../../utils/appwriteClient";
 
-const RegisterForm = () => {
-  const [currentUser, setCurrentUser] = useState(false);
-
+const RegisterForm = ({ dispatch }) => {
   const [formValues, setFormValues] = useState({
     mail: "",
     pass: "",
     name: "",
   });
-  useEffect(() => {
-    isConnected();
-  }, []);
-  const isConnected = () => {
-    const promise = account.get();
-
-    promise.then(
-      function (response) {
-        console.log(response); // Success
-        setCurrentUser(response);
-      },
-      function (error) {
-        console.log(error); // Failure
-      }
-    );
-  };
   const create = () => {
     if (formValues.mail !== "" && formValues.pass !== "") {
-      const promise = account.create(
-        ID.unique(),
-        formValues.mail,
-        formValues.pass,
-        formValues.name
-      );
-
-      promise.then(
-        function (response) {
-          console.log(response); // Success
-        },
-        function (error) {
-          console.log(error); // Failure
-        }
-      );
-    }
-  };
-  const login = () => {
-    if (formValues.mail !== "" && formValues.pass !== "") {
-      const promise = account.createEmailSession(
-        formValues.mail,
-        formValues.pass
-      );
-
-      promise.then(
-        function (response) {
-          console.log(response); // Success
-        },
-        function (error) {
-          console.log(error); // Failure
-        }
-      );
+      dispatch(setLoading(true));
+      account
+        .create(ID.unique(), formValues.mail, formValues.pass, formValues.name)
+        .then((userObj) => {
+          account
+            .createEmailSession(formValues.mail, formValues.pass)
+            .then((resp) => {
+              dispatch(updateSession(resp));
+            }, console.log);
+        }, console.log);
     }
   };
   return (

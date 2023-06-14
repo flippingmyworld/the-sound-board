@@ -3,12 +3,16 @@ import { connect } from "react-redux";
 import { Flex, Text, Button, Box } from "rebass/styled-components";
 import LoginForm from "./Login";
 import RegisterForm from "./Register";
-
-import { updateUser } from "../../redux/actions/user";
+import Loading from "../Loading";
+import {
+  updateUser,
+  updateSession,
+  setLoading,
+} from "../../redux/actions/user";
 import { account } from "../../utils/appwriteClient";
 import LogoutForm from "./LogoutForm";
 
-const Connect = ({ user }) => {
+const Connect = ({ user, session, loading, dispatch }) => {
   const tabs = [
     <>
       <LoginForm />
@@ -43,24 +47,26 @@ const Connect = ({ user }) => {
         </Text>
       </Flex>
     </>,
-    ,
   ];
   const [activeTab, setActiveTab] = useState(0);
   useEffect(() => {
     isConnected();
   }, []);
-  const isConnected = () => {
-    const promise = account.get();
 
-    promise.then(
-      function (response) {
-        updateUser(response); // Success
-        // setCurrentUser(response);
-      },
-      function (error) {
-        updateUser({}); // Failure
-      }
-    );
+  useEffect(() => {
+    if (user && !session) {
+      isConnected();
+    }
+    if (!user && session) {
+      dispatch(setLoading());
+      account.get().then((resp) => dispatch(updateUser(resp)), console.log);
+    }
+  }, [user, session]);
+  const isConnected = () => {
+    dispatch(setLoading());
+    account.getSession("current").then((resp) => {
+      dispatch(updateSession(resp));
+    }, console.log);
   };
   if (user?.$id) {
     return (
@@ -71,14 +77,14 @@ const Connect = ({ user }) => {
     );
   }
   return (
-    <Box width={1} p={2}>
-      <h1>{user.userId}</h1>
+    <Box width={1} p={2} sx={{ position: "relative" }}>
+      <Loading visible={loading} />
       {tabs[activeTab]}
     </Box>
   );
 };
 
 const mapStateToProps = ({ user }) => {
-  return { user: user.user };
+  return { ...user };
 };
 export default connect(mapStateToProps)(Connect);
