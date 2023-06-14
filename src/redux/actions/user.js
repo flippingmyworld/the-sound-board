@@ -14,9 +14,10 @@ export const updateSession = (session) => {
     session,
   };
 };
-export const setLoading = () => {
+export const setLoading = (loading) => {
   return {
     type: SET_LOADING,
+    loading: true,
   };
 };
 export const logout = () => {

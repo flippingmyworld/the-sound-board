@@ -5,6 +5,7 @@ import Icon from "./ui/Icon";
 import Modal from "./ui/Modal";
 
 import ConnectFrom from "./forms/Connect";
+import { width } from "styled-system";
 const SaveModal = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -25,8 +26,8 @@ const SaveModal = () => {
         onClickBg={() => {
           setIsOpen(!isOpen);
         }}
+        modalPops={{ width: ["100%", "500px"] }}
       >
-        {" "}
         <Box
           width={1}
           p={2}

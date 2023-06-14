@@ -13,7 +13,7 @@ const initialState = {
 export default function userReducer(state = initialState, action) {
   switch (action.type) {
     case SET_LOADING:
-      return { ...state, loading: true };
+      return { ...state, loading: action.loading };
     case UPDATE_USER:
       return { ...state, user: action.user, loading: false };
     case UPDATE_SESSION:

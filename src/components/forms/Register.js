@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Box, Heading, Button, Flex } from "rebass/styled-components";
 import { Input, Label } from "@rebass/forms/styled-components";
 
-import { updateSession, setLoading } from "../../redux/actions/user";
+import { updateSession, setLoading, logout } from "../../redux/actions/user";
 import { ID, account } from "../../utils/appwriteClient";
 
 const RegisterForm = ({ dispatch }) => {
@@ -17,13 +17,17 @@ const RegisterForm = ({ dispatch }) => {
       dispatch(setLoading(true));
       account
         .create(ID.unique(), formValues.mail, formValues.pass, formValues.name)
-        .then((userObj) => {
-          account
-            .createEmailSession(formValues.mail, formValues.pass)
-            .then((resp) => {
-              dispatch(updateSession(resp));
-            }, console.log);
-        }, console.log);
+        .then(
+          (userObj) => {
+            account.createEmailSession(formValues.mail, formValues.pass).then(
+              (resp) => {
+                dispatch(updateSession(resp));
+              },
+              () => dispatch(logout())
+            );
+          },
+          () => dispatch(logout())
+        );
     }
   };
   return (

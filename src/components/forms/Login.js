@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Box, Heading, Button, Flex } from "rebass/styled-components";
 import { Input, Label } from "@rebass/forms/styled-components";
 
-import { updateSession, setLoading } from "../../redux/actions/user";
+import { updateSession, setLoading, logout } from "../../redux/actions/user";
 
 import { account } from "../../utils/appwriteClient";
 
@@ -13,9 +13,10 @@ const LoginForm = ({ dispatch }) => {
   const login = () => {
     if (formValues.mail !== "" && formValues.pass !== "") {
       dispatch(setLoading());
-      account
-        .createEmailSession(formValues.mail, formValues.pass)
-        .then((resp) => dispatch(updateSession(resp)), console.log);
+      account.createEmailSession(formValues.mail, formValues.pass).then(
+        (resp) => dispatch(updateSession(resp)),
+        () => dispatch(logout())
+      );
     }
   };
   return (

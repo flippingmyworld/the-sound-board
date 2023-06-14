@@ -8,6 +8,7 @@ import {
   updateUser,
   updateSession,
   setLoading,
+  logout,
 } from "../../redux/actions/user";
 import { account } from "../../utils/appwriteClient";
 import LogoutForm from "./LogoutForm";
@@ -49,6 +50,7 @@ const Connect = ({ user, session, loading, dispatch }) => {
     </>,
   ];
   const [activeTab, setActiveTab] = useState(0);
+
   useEffect(() => {
     isConnected();
   }, []);
@@ -59,14 +61,20 @@ const Connect = ({ user, session, loading, dispatch }) => {
     }
     if (!user && session) {
       dispatch(setLoading());
-      account.get().then((resp) => dispatch(updateUser(resp)), console.log);
+      account.get().then(
+        (resp) => dispatch(updateUser(resp)),
+        () => dispatch(logout())
+      );
     }
   }, [user, session]);
   const isConnected = () => {
     dispatch(setLoading());
-    account.getSession("current").then((resp) => {
-      dispatch(updateSession(resp));
-    }, console.log);
+    account.getSession("current").then(
+      (resp) => {
+        dispatch(updateSession(resp));
+      },
+      () => dispatch(logout())
+    );
   };
   if (user?.$id) {
     return (
