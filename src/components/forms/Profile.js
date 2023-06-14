@@ -12,7 +12,6 @@ const ProfileForm = ({ dispatch, user }) => {
     avatar: "",
     bio: "",
   });
-  console.log(user, "update user");
   const update = () => {
     if (formValues.username !== user.name) {
       const promise = account.updateName(formValues.username);

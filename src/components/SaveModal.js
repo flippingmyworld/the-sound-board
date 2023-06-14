@@ -16,22 +16,31 @@ const SaveModal = ({ state, user, dispatch }) => {
   };
   const save = () => {
     if (settings.name !== "" && state.pads.length) {
-      const promise = databases.createDocument(
-        "soundboard",
-        "boards",
-        ID.unique(),
-        {
-          data: JSON.stringify(state),
-          user: user.user.$id,
-        }
-      );
+      if (settings.id) {
+        databases
+          .updateDocument("soundboard", "boards", settings.id, {
+            data: JSON.stringify(state),
+            user: user.user.$id,
+          })
+          .then(console.log, console.log);
+      } else {
+        const promise = databases.createDocument(
+          "soundboard",
+          "boards",
+          ID.unique(),
+          {
+            data: JSON.stringify(state),
+            user: user.user.$id,
+          }
+        );
 
-      promise.then(
-        function (response) {
-          navigate("/boards/" + response.$id);
-        },
-        function (error) {}
-      );
+        promise.then(
+          function (response) {
+            navigate("/boards/" + response.$id);
+          },
+          function (error) {}
+        );
+      }
     }
   };
   if (state.pads.length) {
