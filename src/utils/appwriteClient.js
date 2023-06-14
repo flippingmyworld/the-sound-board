@@ -1,4 +1,4 @@
-import { Client, Databases, Account, Storage, ID } from "appwrite";
+import { Client, Databases, Account, Storage, ID, Query } from "appwrite";
 
 const APPWRITE_URL = "https://cloud.appwrite.io/v1";
 const APPWRITE_PROJECT = "6488334b73906c5bdbb6";
@@ -19,4 +19,4 @@ const account = new Account(appwriteClient);
 const storage = new Storage(appwriteClient);
 const databases = new Databases(appwriteClient);
 
-export { appwriteClient, account, storage, databases, ID };
+export { appwriteClient, account, storage, databases, ID, Query };

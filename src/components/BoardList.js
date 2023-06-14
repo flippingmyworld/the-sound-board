@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Flex, Text } from "rebass/styled-components";
 import { Link } from "gatsby";
-import { databases } from "../utils/appwriteClient";
+import { databases, Query } from "../utils/appwriteClient";
 
 function get_youtube_thumbnail(url, quality) {
   if (url) {
@@ -33,10 +33,16 @@ function get_youtube_thumbnail(url, quality) {
   }
   return false;
 }
-const BoardList = () => {
+const BoardList = ({ user }) => {
   const [boards, setBoards] = useState([]);
   useEffect(() => {
-    const promise = databases.listDocuments("soundboard", "boards");
+    const promise = user
+      ? databases.listDocuments(
+          "soundboard",
+          "boards",
+          Query.equal("user", [user])
+        )
+      : databases.listDocuments("soundboard", "boards");
 
     promise.then(
       function (response) {
@@ -68,7 +74,7 @@ const BoardList = () => {
           : "/img/image-og.jpg";
         return (
           <Box key={board.settings.id} width={[1, 1 / 2, 1 / 3]}>
-            <Link to={"/board/" + board.settings.id}>
+            <Link to={"/boards/" + board.settings.id}>
               <Box
                 p={2}
                 sx={{

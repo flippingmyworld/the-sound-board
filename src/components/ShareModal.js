@@ -24,7 +24,7 @@ const ShareModal = ({ boardId, title }) => {
   if (!boardId) {
     return null;
   }
-  const link = baseUrl + "/board/" + boardId;
+  const link = baseUrl + "/boards/" + boardId;
   return (
     <>
       <Button
